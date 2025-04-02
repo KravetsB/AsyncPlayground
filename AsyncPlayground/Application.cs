@@ -4,15 +4,15 @@ using System.Diagnostics;
 
 namespace AsyncPlayground
 {
-	internal class Application
-	{
-		private Dictionary<string, int> _cache = new() { ["x"] = 42 };
-		private readonly ApplicationContext _context;
+    internal class Application
+    {
+        private Dictionary<string, int> _cache = new() { ["x"] = 42 };
+        private readonly ApplicationContext _context;
 
-		public Application(ApplicationContext context)
-		{
-			_context = context;
-		}
+        public Application(ApplicationContext context)
+        {
+            _context = context;
+        }
 
         public async Task Go()
         {
@@ -23,12 +23,12 @@ namespace AsyncPlayground
             await Task5_DisposalAsync();
             await Task6_MultipleCallsAsync();
             await Task7_1_GetFirstEmployeeNameAsync();
-            await Task7_2_CorrectBlockingAsync();		
+            await Task7_2_CorrectBlockingAsync();
             await Task8_FireAndForgetAsync();
             //Task8_FireAndForgetForReal();
             await Task9_GetCachedValueAsync();
 
-            using (var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(11))) 
+            using (var cancellationTokenSource = new CancellationTokenSource(TimeSpan.FromSeconds(11)))
             {
                 await Task10_CancellationAsync(cancellationTokenSource.Token);
             }
@@ -140,10 +140,10 @@ namespace AsyncPlayground
             return employeesFromDepartments.SelectMany(x => x).ToList();
         }
 
-		private async Task<List<Employee>> GetEmployeesFromDepartmentAsync(string department)
-		{
-			return await _context.Employees.Where(e => e.Department == department).ToListAsync();
-		}
+        private async Task<List<Employee>> GetEmployeesFromDepartmentAsync(string department)
+        {
+            return await _context.Employees.Where(e => e.Department == department).ToListAsync();
+        }
 
         // Task 7.1. I just don't like AggregateExceptions
         //What done: changed method to async Task and added await
@@ -164,10 +164,10 @@ namespace AsyncPlayground
             await LongImportantJobThatShouldBeAwaited();
         }
 
-		private async Task LongImportantJobThatShouldBeAwaited()
-		{
-			await Task.Delay(5000);
-		}
+        private async Task LongImportantJobThatShouldBeAwaited()
+        {
+            await Task.Delay(5000);
+        }
 
         // Task 8. Avoid Fire-and-Forget Without Logging or Handling
         //What done: make method async and await task 
@@ -189,7 +189,7 @@ namespace AsyncPlayground
             Console.WriteLine("Background work completed!");
             throw new Exception("Background work failed!");
         }
-        
+
         private void Task8_FireAndForgetForReal()
         {
             _ = Task.Run(async () =>
@@ -212,14 +212,14 @@ namespace AsyncPlayground
             if (_cache.TryGetValue("x", out var value))
                 return value;
 
-			return await FetchValueAsync();
-		}
+            return await FetchValueAsync();
+        }
 
-		private async Task<int> FetchValueAsync()
-		{
-			await Task.Delay(100);
-			return new Random().Next();
-		}
+        private async Task<int> FetchValueAsync()
+        {
+            await Task.Delay(100);
+            return new Random().Next();
+        }
 
         // Task 10. Provide cancellation mechanism for the long-running task
         //Waht done: added CancellationToken
@@ -232,25 +232,24 @@ namespace AsyncPlayground
         {
             for (int i = 0; i < 100; i++)
             {
-                if (cancellationToken.IsCancellationRequested)
-                {
-                    Debug.WriteLine("Task 10 canceled");
-                    break;
-                }
-                
-                await Task.Delay(5000);
-
-                /** Or in case with Delay:
                 try
                 {
                     await Task.Delay(5000, cancellationToken);
-                    Console.WriteLine(DateTime.UtcNow);
                 }
                 catch (TaskCanceledException ex)
                 {
                     Debug.WriteLine("Task 10 canceled");
                     break;
                 }
+
+                /** Or if async method have not CancellationToken parameter:
+                if (cancellationToken.IsCancellationRequested)
+                   {
+                       Debug.WriteLine("Task 10 canceled");
+                       break;
+                   }
+                   
+                   await Task.Delay(5000);
                 **/
             }
         }

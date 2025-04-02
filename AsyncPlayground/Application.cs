@@ -244,12 +244,12 @@ namespace AsyncPlayground
 
                 /** Or if async method have not CancellationToken parameter:
                 if (cancellationToken.IsCancellationRequested)
-                   {
-                       Debug.WriteLine("Task 10 canceled");
-                       break;
-                   }
-                   
-                   await Task.Delay(5000);
+                {
+                    Debug.WriteLine("Task 10 canceled");
+                    break;
+                }
+                
+                await Task.Delay(5000);
                 **/
             }
         }

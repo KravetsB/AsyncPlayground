@@ -4,15 +4,15 @@ using System.Diagnostics;
 
 namespace AsyncPlayground
 {
-    internal class Application
-    {
-        private Dictionary<string, int> _cache = new() { ["x"] = 42 };
-        private readonly ApplicationContext _context;
+	internal class Application
+	{
+		private Dictionary<string, int> _cache = new() { ["x"] = 42 };
+		private readonly ApplicationContext _context;
 
-        public Application(ApplicationContext context)
-        {
-            _context = context;
-        }
+		public Application(ApplicationContext context)
+		{
+			_context = context;
+		}
 
         public async Task Go()
         {
@@ -140,10 +140,10 @@ namespace AsyncPlayground
             return employeesFromDepartments.SelectMany(x => x).ToList();
         }
 
-        private async Task<List<Employee>> GetEmployeesFromDepartmentAsync(string department)
-        {
-            return await _context.Employees.Where(e => e.Department == department).ToListAsync();
-        }
+		private async Task<List<Employee>> GetEmployeesFromDepartmentAsync(string department)
+		{
+			return await _context.Employees.Where(e => e.Department == department).ToListAsync();
+		}
 
         // Task 7.1. I just don't like AggregateExceptions
         //What done: changed method to async Task and added await
@@ -164,10 +164,10 @@ namespace AsyncPlayground
             await LongImportantJobThatShouldBeAwaited();
         }
 
-        private async Task LongImportantJobThatShouldBeAwaited()
-        {
-            await Task.Delay(5000);
-        }
+		private async Task LongImportantJobThatShouldBeAwaited()
+		{
+			await Task.Delay(5000);
+		}
 
         // Task 8. Avoid Fire-and-Forget Without Logging or Handling
         //What done: make method async and await task 
@@ -212,14 +212,14 @@ namespace AsyncPlayground
             if (_cache.TryGetValue("x", out var value))
                 return value;
 
-            return await FetchValueAsync();
-        }
+			return await FetchValueAsync();
+		}
 
-        private async Task<int> FetchValueAsync()
-        {
-            await Task.Delay(100);
-            return new Random().Next();
-        }
+		private async Task<int> FetchValueAsync()
+		{
+			await Task.Delay(100);
+			return new Random().Next();
+		}
 
         // Task 10. Provide cancellation mechanism for the long-running task
         //Waht done: added CancellationToken
